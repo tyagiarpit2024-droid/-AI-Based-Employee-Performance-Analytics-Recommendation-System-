@@ -18,10 +18,8 @@ services:
       - key: CLIENT_URL
         sync: false
 
-  - type: web
+  - type: static_site
     name: endsem-frontend
-    env: static
-    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
