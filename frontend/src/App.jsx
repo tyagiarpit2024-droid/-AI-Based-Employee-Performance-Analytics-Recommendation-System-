@@ -19,11 +19,11 @@ const Layout = ({ children }) => {
   if (!user) return children;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden bg-dark">
       <Sidebar />
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         <TopBar />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6 scroll-smooth">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
           {children}
         </main>
       </div>
@@ -62,9 +62,9 @@ const App = () => {
           position="top-right"
           toastOptions={{
             style: {
-              background: '#1e293b',
-              color: '#fff',
-              border: '1px solid rgba(255,255,255,0.1)'
+              background: 'var(--surface-hover)',
+              color: 'var(--text-main)',
+              border: '1px solid var(--surface-border)'
             }
           }}
         />

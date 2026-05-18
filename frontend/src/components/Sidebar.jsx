@@ -13,17 +13,17 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 hidden md:flex flex-col glass-card h-[calc(100vh-2rem)] m-4 sticky top-4 overflow-hidden border-r border-slate-700/50">
-      <div className="p-6 flex items-center space-x-3">
-        <div className="p-2 bg-gradient-to-br from-primary to-neon rounded-lg shadow-lg shadow-primary/30">
-          <Activity className="w-6 h-6 text-white" />
+    <div className="md:flex flex-col glass-card m-4 sticky top-0 overflow-hidden border-r md:w-72" style={{ display: 'none', height: 'calc(100vh - 2rem)' }}>
+      <div className="flex items-center p-6 border-b" style={{ paddingBottom: '1.5rem' }}>
+        <div className="avatar avatar-sm bg-gradient-primary mr-3" style={{ boxShadow: '0 4px 14px rgba(99,102,241,0.4)' }}>
+          <Activity size={20} color="white" />
         </div>
-        <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+        <span className="text-xl font-bold bg-gradient-text">
           AI Analytics
         </span>
       </div>
 
-      <nav className="flex-1 px-4 space-y-2 mt-4">
+      <nav className="flex-1 mt-4 px-4 flex flex-col gap-2">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
           const Icon = item.icon;
@@ -32,29 +32,29 @@ const Sidebar = () => {
             <NavLink
               key={item.path}
               to={item.path}
-              className={`relative flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
-                isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'
-              }`}
+              className="relative flex items-center p-3 rounded-lg z-10"
+              style={{ color: isActive ? 'white' : 'var(--text-muted)' }}
             >
               {isActive && (
                 <motion.div 
                   layoutId="active-nav"
-                  className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-xl"
+                  className="absolute left-0 right-0 top-0 bottom-0 bg-primary opacity-20 border border-primary z-0"
+                  style={{ borderRadius: 'var(--radius-lg)' }}
                   initial={false}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
               )}
-              <Icon className={`w-5 h-5 relative z-10 ${isActive ? 'text-primary' : 'group-hover:text-primary transition-colors'}`} />
-              <span className="relative z-10 font-medium">{item.name}</span>
+              <Icon size={20} style={{ color: isActive ? 'var(--primary)' : 'inherit', zIndex: 10, marginRight: '0.75rem' }} />
+              <span style={{ zIndex: 10, fontWeight: 500 }}>{item.name}</span>
             </NavLink>
           );
         })}
       </nav>
 
-      <div className="p-4 mx-4 mb-4 rounded-xl bg-gradient-to-br from-indigo-900/40 to-slate-900/40 border border-indigo-500/20 text-center">
-        <BrainCircuit className="w-8 h-8 text-neon mx-auto mb-2 opacity-80" />
-        <h4 className="text-sm font-semibold text-slate-200 mb-1">AI Engine Active</h4>
-        <p className="text-xs text-slate-400">OpenRouter integration is running optimally.</p>
+      <div className="m-4 p-4 border border-primary" style={{ background: 'rgba(99,102,241,0.1)', borderRadius: 'var(--radius-lg)', textAlign: 'center' }}>
+        <BrainCircuit size={32} color="var(--neon)" style={{ margin: '0 auto 0.5rem auto', opacity: 0.8 }} />
+        <h4 className="text-sm font-semibold text-white mb-1">AI Engine Active</h4>
+        <p className="text-xs text-muted">OpenRouter integration is running optimally.</p>
       </div>
     </div>
   );

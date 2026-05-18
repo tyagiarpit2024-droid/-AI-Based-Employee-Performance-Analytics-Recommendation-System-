@@ -59,16 +59,13 @@ const AIRecommendation = () => {
 
   if (fetching) return (
     <div className="flex h-full items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="spinner spinner-lg"></div>
     </div>
   );
 
   const container = {
     hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
+    show: { opacity: 1, transition: { staggerChildren: 0.15 } }
   };
 
   const item = {
@@ -79,8 +76,8 @@ const AIRecommendation = () => {
   return (
     <AnimatedPage>
       <div className="max-w-5xl mx-auto">
-        <button onClick={() => navigate(-1)} className="flex items-center text-slate-400 hover:text-white mb-6 font-medium transition-colors">
-          <ArrowLeft className="h-4 w-4 mr-2" /> Back to Directory
+        <button onClick={() => navigate(-1)} className="flex items-center text-muted mb-6 font-medium" style={{ transition: 'color 0.2s' }}>
+          <ArrowLeft size={16} className="mr-2" /> Back to Directory
         </button>
 
         <motion.div 
@@ -88,14 +85,14 @@ const AIRecommendation = () => {
           animate={{ opacity: 1, y: 0 }}
           className="glass-card overflow-hidden mb-8 relative"
         >
-          {/* Decorative background for the profile card */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-neon/10 rounded-full blur-3xl -ml-20 -mb-20"></div>
+          {/* Decorative background */}
+          <div className="absolute bg-primary" style={{ top: 0, right: 0, width: '16rem', height: '16rem', borderRadius: '50%', filter: 'blur(100px)', opacity: 0.2, margin: '-5rem -5rem 0 0' }}></div>
+          <div className="absolute bg-neon" style={{ bottom: 0, left: 0, width: '16rem', height: '16rem', borderRadius: '50%', filter: 'blur(100px)', opacity: 0.2, margin: '0 0 -5rem -5rem' }}></div>
           
           <div className="p-8 relative z-10">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
               <div className="flex items-center">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-primary to-neon flex items-center justify-center font-bold text-3xl text-white shadow-xl shadow-primary/20 mr-6">
+                <div className="avatar avatar-lg bg-gradient-primary mr-6">
                   {employee.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
@@ -104,26 +101,26 @@ const AIRecommendation = () => {
                 </div>
               </div>
               
-              <div className="flex flex-row md:flex-col items-center md:items-end gap-4 md:gap-1">
+              <div className="flex flex-row md:flex-col items-center md:items-end gap-4">
                 <div className="text-center md:text-right">
-                  <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-neon to-primary">
+                  <div className="text-4xl font-black bg-gradient-text">
                     {employee.performanceScore}
                   </div>
-                  <div className="text-xs text-slate-400 uppercase tracking-widest font-semibold mt-1">Performance</div>
+                  <div className="text-xs text-muted uppercase tracking-widest font-semibold mt-1">Performance</div>
                 </div>
-                <div className="hidden md:block h-10 w-px bg-slate-700 mx-4"></div>
+                <div className="md:block border-l mx-4" style={{ display: 'none', height: '2.5rem' }}></div>
                 <div className="text-center md:text-right">
-                  <div className="text-2xl font-bold text-white">{employee.experience} <span className="text-lg text-slate-400">Yrs</span></div>
-                  <div className="text-xs text-slate-400 uppercase tracking-widest font-semibold mt-1">Experience</div>
+                  <div className="text-2xl font-bold text-white">{employee.experience} <span className="text-lg text-muted">Yrs</span></div>
+                  <div className="text-xs text-muted uppercase tracking-widest font-semibold mt-1">Experience</div>
                 </div>
               </div>
             </div>
             
-            <div className="mt-8 pt-8 border-t border-slate-700/50">
-              <h3 className="text-sm text-slate-400 uppercase tracking-widest font-semibold mb-3">Core Competencies</h3>
+            <div className="mt-8 pt-8 border-t">
+              <h3 className="text-sm text-muted uppercase tracking-widest font-semibold mb-3">Core Competencies</h3>
               <div className="flex flex-wrap gap-3">
                 {employee.skills.map((skill, idx) => (
-                  <span key={idx} className="bg-slate-800/80 border border-slate-700 text-slate-200 px-4 py-2 rounded-lg text-sm font-medium shadow-sm">
+                  <span key={idx} className="badge badge-neutral p-2 px-4 text-sm" style={{ border: '1px solid var(--surface-border)' }}>
                     {skill}
                   </span>
                 ))}
@@ -134,16 +131,16 @@ const AIRecommendation = () => {
               <button 
                 onClick={getRecommendation} 
                 disabled={loading}
-                className="w-full btn-primary flex justify-center items-center py-4 text-lg group"
+                className="w-full btn-primary py-4 text-lg"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-6 h-6 mr-3 animate-spin" />
+                    <Loader2 size={24} className="mr-3" style={{ animation: 'spin 1s linear infinite' }} />
                     Generating OpenRouter AI Insights...
                   </>
                 ) : (
                   <>
-                    <BrainCircuit className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
+                    <BrainCircuit size={24} className="mr-3" />
                     {recommendation ? 'Regenerate AI Analysis' : 'Generate AI Analysis'}
                   </>
                 )}
@@ -158,57 +155,57 @@ const AIRecommendation = () => {
               variants={container}
               initial="hidden"
               animate="show"
-              className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12"
+              className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8"
             >
-              <motion.div variants={item} className="glass-card p-8 border-t-4 border-t-green-500 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-green-500/20 transition-colors"></div>
+              <motion.div variants={item} className="glass-card p-8 relative overflow-hidden" style={{ borderTop: '4px solid var(--success)' }}>
+                <div className="absolute" style={{ top: 0, right: 0, width: '8rem', height: '8rem', background: 'var(--success)', opacity: 0.1, borderRadius: '50%', filter: 'blur(30px)', margin: '-2rem -2rem 0 0' }}></div>
                 <div className="flex items-center mb-6 relative z-10">
-                  <div className="p-3 bg-green-500/20 rounded-xl mr-4">
-                    <Award className="h-7 w-7 text-green-400" />
+                  <div className="icon-box icon-box-success mr-4">
+                    <Award size={28} />
                   </div>
                   <h3 className="text-xl font-bold text-white">Promotion Readiness</h3>
                 </div>
-                <p className="text-slate-300 leading-relaxed relative z-10 text-lg">{recommendation.promotionRecommendation}</p>
+                <p className="text-muted text-lg relative z-10">{recommendation.promotionRecommendation}</p>
               </motion.div>
 
-              <motion.div variants={item} className="glass-card p-8 border-t-4 border-t-blue-500 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-500/20 transition-colors"></div>
+              <motion.div variants={item} className="glass-card p-8 relative overflow-hidden" style={{ borderTop: '4px solid #3b82f6' }}>
+                <div className="absolute" style={{ top: 0, right: 0, width: '8rem', height: '8rem', background: '#3b82f6', opacity: 0.1, borderRadius: '50%', filter: 'blur(30px)', margin: '-2rem -2rem 0 0' }}></div>
                 <div className="flex items-center mb-6 relative z-10">
-                  <div className="p-3 bg-blue-500/20 rounded-xl mr-4">
-                    <BookOpen className="h-7 w-7 text-blue-400" />
+                  <div className="icon-box mr-4" style={{ background: 'rgba(59,130,246,0.2)', color: '#60a5fa' }}>
+                    <BookOpen size={28} />
                   </div>
                   <h3 className="text-xl font-bold text-white">Learning Path</h3>
                 </div>
-                <ul className="space-y-3 relative z-10">
+                <ul className="flex flex-col gap-3 relative z-10">
                   {recommendation.trainingSuggestions?.map((item, idx) => (
                     <li key={idx} className="flex items-start">
-                      <span className="w-2 h-2 rounded-full bg-blue-400 mt-2 mr-3 flex-shrink-0"></span>
-                      <span className="text-slate-300 leading-relaxed">{item}</span>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#60a5fa', marginTop: '0.5rem', marginRight: '0.75rem', flexShrink: 0 }}></span>
+                      <span className="text-muted">{item}</span>
                     </li>
                   ))}
                 </ul>
               </motion.div>
 
-              <motion.div variants={item} className="glass-card p-8 border-t-4 border-t-orange-500 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-orange-500/20 transition-colors"></div>
+              <motion.div variants={item} className="glass-card p-8 relative overflow-hidden" style={{ borderTop: '4px solid #f97316' }}>
+                <div className="absolute" style={{ top: 0, right: 0, width: '8rem', height: '8rem', background: '#f97316', opacity: 0.1, borderRadius: '50%', filter: 'blur(30px)', margin: '-2rem -2rem 0 0' }}></div>
                 <div className="flex items-center mb-6 relative z-10">
-                  <div className="p-3 bg-orange-500/20 rounded-xl mr-4">
-                    <MessageSquare className="h-7 w-7 text-orange-400" />
+                  <div className="icon-box mr-4" style={{ background: 'rgba(249,115,22,0.2)', color: '#fb923c' }}>
+                    <MessageSquare size={28} />
                   </div>
                   <h3 className="text-xl font-bold text-white">Manager Feedback</h3>
                 </div>
-                <p className="text-slate-300 leading-relaxed relative z-10 italic">"{recommendation.feedback}"</p>
+                <p className="text-muted italic relative z-10">"{recommendation.feedback}"</p>
               </motion.div>
 
-              <motion.div variants={item} className="glass-card p-8 border-t-4 border-t-purple-500 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-purple-500/20 transition-colors"></div>
+              <motion.div variants={item} className="glass-card p-8 relative overflow-hidden" style={{ borderTop: '4px solid #a855f7' }}>
+                <div className="absolute" style={{ top: 0, right: 0, width: '8rem', height: '8rem', background: '#a855f7', opacity: 0.1, borderRadius: '50%', filter: 'blur(30px)', margin: '-2rem -2rem 0 0' }}></div>
                 <div className="flex items-center mb-6 relative z-10">
-                  <div className="p-3 bg-purple-500/20 rounded-xl mr-4">
-                    <TrendingUp className="h-7 w-7 text-purple-400" />
+                  <div className="icon-box mr-4" style={{ background: 'rgba(168,85,247,0.2)', color: '#c084fc' }}>
+                    <TrendingUp size={28} />
                   </div>
                   <h3 className="text-xl font-bold text-white">Performance Insight</h3>
                 </div>
-                <p className="text-slate-300 leading-relaxed relative z-10 text-lg">{recommendation.rankingInsight}</p>
+                <p className="text-muted text-lg relative z-10">{recommendation.rankingInsight}</p>
               </motion.div>
             </motion.div>
           )}

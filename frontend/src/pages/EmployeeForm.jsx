@@ -95,7 +95,7 @@ const EmployeeForm = () => {
 
   if (fetching) return (
     <div className="flex h-full items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="spinner spinner-lg"></div>
     </div>
   );
 
@@ -107,84 +107,84 @@ const EmployeeForm = () => {
           animate={{ opacity: 1, y: 0 }}
           className="glass-card overflow-hidden"
         >
-          <div className="bg-slate-900/50 p-6 border-b border-slate-700/50 flex justify-between items-center">
+          <div className="p-6 border-b flex justify-between items-center" style={{ background: 'rgba(15,23,42,0.5)' }}>
             <div>
               <h1 className="text-2xl font-bold text-white">
                 {isEdit ? 'Edit Employee Profile' : 'Add New Employee'}
               </h1>
-              <p className="text-slate-400 mt-1">
+              <p className="text-muted mt-1">
                 {isEdit ? 'Update existing employee details and metrics.' : 'Create a new employee record.'}
               </p>
             </div>
-            <div className="p-3 bg-primary/20 rounded-xl">
-              <User className="w-6 h-6 text-primary" />
+            <div className="icon-box icon-box-primary">
+              <User size={24} />
             </div>
           </div>
           
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Full Name</label>
+                <label className="text-sm font-medium text-muted mb-1" style={{ display: 'block' }}>Full Name</label>
                 <div className="relative">
-                  <User className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
-                  <input type="text" name="name" required value={formData.name} onChange={handleChange} className="glass-input pl-12" placeholder="John Doe" />
+                  <User className="absolute top-0 bottom-0 text-muted" style={{ left: '1rem', margin: 'auto' }} size={20} />
+                  <input type="text" name="name" required value={formData.name} onChange={handleChange} className="glass-input glass-input-icon" placeholder="John Doe" />
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Email Address</label>
+                <label className="text-sm font-medium text-muted mb-1" style={{ display: 'block' }}>Email Address</label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
-                  <input type="email" name="email" required value={formData.email} onChange={handleChange} className="glass-input pl-12" placeholder="john@company.com" />
+                  <Mail className="absolute top-0 bottom-0 text-muted" style={{ left: '1rem', margin: 'auto' }} size={20} />
+                  <input type="email" name="email" required value={formData.email} onChange={handleChange} className="glass-input glass-input-icon" placeholder="john@company.com" />
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Department</label>
+                <label className="text-sm font-medium text-muted mb-1" style={{ display: 'block' }}>Department</label>
                 <div className="relative">
-                  <Briefcase className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
-                  <input type="text" name="department" required value={formData.department} onChange={handleChange} className="glass-input pl-12" placeholder="Engineering" />
+                  <Briefcase className="absolute top-0 bottom-0 text-muted" style={{ left: '1rem', margin: 'auto' }} size={20} />
+                  <input type="text" name="department" required value={formData.department} onChange={handleChange} className="glass-input glass-input-icon" placeholder="Engineering" />
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Experience (Years)</label>
+                <label className="text-sm font-medium text-muted mb-1" style={{ display: 'block' }}>Experience (Years)</label>
                 <div className="relative">
-                  <TrendingUp className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
-                  <input type="number" name="experience" required min="0" value={formData.experience} onChange={handleChange} className="glass-input pl-12" placeholder="5" />
+                  <TrendingUp className="absolute top-0 bottom-0 text-muted" style={{ left: '1rem', margin: 'auto' }} size={20} />
+                  <input type="number" name="experience" required min="0" value={formData.experience} onChange={handleChange} className="glass-input glass-input-icon" placeholder="5" />
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">Skills (comma separated)</label>
+              <label className="text-sm font-medium text-muted mb-1" style={{ display: 'block' }}>Skills (comma separated)</label>
               <div className="relative">
-                <Cpu className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
-                <input type="text" name="skills" required value={formData.skills} onChange={handleChange} placeholder="React, Node.js, Python, AWS" className="glass-input pl-12" />
+                <Cpu className="absolute top-0 bottom-0 text-muted" style={{ left: '1rem', margin: 'auto' }} size={20} />
+                <input type="text" name="skills" required value={formData.skills} onChange={handleChange} placeholder="React, Node.js, Python, AWS" className="glass-input glass-input-icon" />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">Performance Score (1-100)</label>
+              <label className="text-sm font-medium text-muted mb-1" style={{ display: 'block' }}>Performance Score (1-100)</label>
               <div className="relative">
-                <Award className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
-                <input type="number" name="performanceScore" required min="1" max="100" value={formData.performanceScore} onChange={handleChange} className="glass-input pl-12" placeholder="85" />
+                <Award className="absolute top-0 bottom-0 text-muted" style={{ left: '1rem', margin: 'auto' }} size={20} />
+                <input type="number" name="performanceScore" required min="1" max="100" value={formData.performanceScore} onChange={handleChange} className="glass-input glass-input-icon" placeholder="85" />
               </div>
             </div>
 
-            <div className="flex gap-4 pt-4 border-t border-slate-700/50 mt-8">
-              <button type="submit" disabled={loading} className="flex-1 btn-primary flex justify-center items-center">
+            <div className="flex gap-4 pt-4 border-t mt-4">
+              <button type="submit" disabled={loading} className="flex-1 btn-primary">
                 {loading ? (
-                  <span className="animate-pulse">Saving...</span>
+                  <span style={{ animation: 'pulse 2s infinite' }}>Saving...</span>
                 ) : (
                   <>
-                    <Save className="w-5 h-5 mr-2" />
+                    <Save size={20} className="mr-2" />
                     {isEdit ? 'Update Employee' : 'Create Employee'}
                   </>
                 )}
               </button>
-              <button type="button" onClick={() => navigate('/employees')} className="flex-1 btn-secondary flex justify-center items-center">
-                <X className="w-5 h-5 mr-2" /> Cancel
+              <button type="button" onClick={() => navigate('/employees')} className="flex-1 btn-secondary">
+                <X size={20} className="mr-2" /> Cancel
               </button>
             </div>
           </form>

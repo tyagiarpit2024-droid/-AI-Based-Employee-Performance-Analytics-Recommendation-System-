@@ -67,120 +67,121 @@ const EmployeeList = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white tracking-tight flex items-center">
-            <Users className="w-8 h-8 mr-3 text-primary" />
+            <Users size={32} className="text-primary mr-3" />
             Employee Directory
           </h1>
-          <p className="text-slate-400 mt-1">Manage and analyze your workforce</p>
+          <p className="text-muted mt-1">Manage and analyze your workforce</p>
         </div>
         
-        <div className="flex w-full md:w-auto gap-3">
+        <div className="flex w-full md:w-auto gap-3 flex-wrap">
           <form onSubmit={handleSearch} className="flex relative w-full md:w-72">
             <input
               type="text"
               placeholder="Search department..."
-              className="glass-input pl-10"
+              className="glass-input glass-input-icon"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Search className="absolute left-3 top-3.5 text-slate-400 h-5 w-5" />
+            <Search className="absolute top-0 bottom-0 text-muted" style={{ left: '0.75rem', margin: 'auto' }} size={20} />
           </form>
           {searchTerm && (
             <button onClick={handleClear} className="btn-secondary">
               Clear
             </button>
           )}
-          <Link to="/employees/new" className="btn-primary flex items-center whitespace-nowrap">
-            <UserPlus className="h-4 w-4 mr-2" /> Add New
+          <Link to="/employees/new" className="btn-primary flex items-center" style={{ whiteSpace: 'nowrap' }}>
+            <UserPlus size={16} className="mr-2" /> Add New
           </Link>
         </div>
       </div>
 
       <div className="glass-card overflow-hidden">
         {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          <div className="flex justify-center items-center" style={{ height: '16rem' }}>
+            <div className="spinner spinner-lg"></div>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="custom-table">
               <thead>
-                <tr className="bg-slate-900/50 text-slate-300 text-sm border-b border-slate-700/50">
-                  <th className="p-4 font-semibold">Employee</th>
-                  <th className="p-4 font-semibold">Department</th>
-                  <th className="p-4 font-semibold">Skills</th>
-                  <th className="p-4 font-semibold text-center">Score</th>
-                  <th className="p-4 font-semibold text-center">Actions</th>
+                <tr>
+                  <th>Employee</th>
+                  <th>Department</th>
+                  <th>Skills</th>
+                  <th className="text-center">Score</th>
+                  <th className="text-center">Actions</th>
                 </tr>
               </thead>
               <motion.tbody 
                 variants={container}
                 initial="hidden"
                 animate="show"
-                className="divide-y divide-slate-800/50"
               >
                 {employees.map((emp) => (
-                  <motion.tr variants={item} key={emp._id} className="hover:bg-slate-800/30 transition-colors group">
-                    <td className="p-4">
+                  <motion.tr variants={item} key={emp._id}>
+                    <td>
                       <div className="flex items-center">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-neon flex items-center justify-center font-bold text-white shadow-lg mr-3">
+                        <div className="avatar avatar-md bg-gradient-primary mr-3">
                           {emp.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-medium text-white group-hover:text-primary transition-colors">{emp.name}</p>
-                          <p className="text-xs text-slate-500">{emp.email}</p>
+                          <p className="font-medium text-white">{emp.name}</p>
+                          <p className="text-xs text-muted">{emp.email}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="p-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                    <td>
+                      <span className="badge badge-neutral">
                         {emp.department}
                       </span>
                     </td>
-                    <td className="p-4">
-                      <div className="flex flex-wrap gap-2">
+                    <td>
+                      <div className="flex flex-wrap gap-1">
                         {emp.skills.slice(0, 3).map((skill, idx) => (
-                          <span key={idx} className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-md border border-primary/20">
+                          <span key={idx} className="badge badge-primary">
                             {skill}
                           </span>
                         ))}
                         {emp.skills.length > 3 && (
-                          <span className="text-xs text-slate-500 bg-slate-800 px-2 py-1 rounded-md border border-slate-700">
+                          <span className="badge badge-neutral">
                             +{emp.skills.length - 3}
                           </span>
                         )}
                       </div>
                     </td>
-                    <td className="p-4 text-center">
-                      <span className={`inline-flex items-center justify-center w-12 h-12 rounded-full border-4 ${
-                        emp.performanceScore >= 80 ? 'border-green-500/20 text-green-400' :
-                        emp.performanceScore >= 60 ? 'border-yellow-500/20 text-yellow-400' :
-                        'border-red-500/20 text-red-400'
-                      } font-bold text-sm bg-slate-900/50 shadow-inner`}>
+                    <td className="text-center">
+                      <div style={{
+                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                        width: '3rem', height: '3rem', borderRadius: '50%', fontWeight: 'bold', fontSize: '0.875rem',
+                        background: 'rgba(15,23,42,0.5)',
+                        border: `4px solid ${emp.performanceScore >= 80 ? 'rgba(16,185,129,0.2)' : emp.performanceScore >= 60 ? 'rgba(245,158,11,0.2)' : 'rgba(239,68,68,0.2)'}`,
+                        color: emp.performanceScore >= 80 ? 'var(--success)' : emp.performanceScore >= 60 ? 'var(--warning)' : 'var(--danger)'
+                      }}>
                         {emp.performanceScore}
-                      </span>
+                      </div>
                     </td>
-                    <td className="p-4">
-                      <div className="flex justify-center space-x-2">
+                    <td>
+                      <div className="flex justify-center gap-2">
                         <button 
                           onClick={() => navigate(`/ai-recommendation/${emp._id}`, { state: { employee: emp } })} 
-                          className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all duration-300 group-hover:shadow-lg shadow-primary/20" 
+                          className="btn-icon btn-icon-primary" 
                           title="AI Analysis"
                         >
-                          <BrainCircuit className="h-5 w-5" />
+                          <BrainCircuit size={20} />
                         </button>
                         <button 
                           onClick={() => navigate(`/employees/edit/${emp._id}`, { state: { employee: emp } })} 
-                          className="p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all duration-300" 
+                          className="btn-icon btn-icon-neutral" 
                           title="Edit"
                         >
-                          <Edit className="h-5 w-5" />
+                          <Edit size={20} />
                         </button>
                         <button 
                           onClick={() => handleDelete(emp._id)} 
-                          className="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition-all duration-300" 
+                          className="btn-icon btn-icon-danger" 
                           title="Delete"
                         >
-                          <Trash2 className="h-5 w-5" />
+                          <Trash2 size={20} />
                         </button>
                       </div>
                     </td>
@@ -188,12 +189,14 @@ const EmployeeList = () => {
                 ))}
                 {employees.length === 0 && (
                   <tr>
-                    <td colSpan="5" className="text-center py-12">
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 mb-4">
-                        <Users className="w-8 h-8 text-slate-500" />
+                    <td colSpan="5" className="text-center py-8">
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="avatar avatar-lg bg-surface mb-4">
+                          <Users size={32} color="var(--text-muted)" />
+                        </div>
+                        <p className="text-muted text-lg">No employees found.</p>
+                        <p className="text-muted text-sm mt-1">Try adjusting your search or add a new employee.</p>
                       </div>
-                      <p className="text-slate-400 text-lg">No employees found.</p>
-                      <p className="text-slate-500 text-sm mt-1">Try adjusting your search or add a new employee.</p>
                     </td>
                   </tr>
                 )}

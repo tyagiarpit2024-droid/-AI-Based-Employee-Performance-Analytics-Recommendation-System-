@@ -28,38 +28,39 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-dark">
       {/* Background decoration */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/20 blur-[120px] animate-blob"></div>
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-neon/20 blur-[120px] animate-blob" style={{ animationDelay: '2s' }}></div>
+      <div className="blur-blob" style={{ top: '-20%', left: '-10%', width: '50%', height: '50%', background: 'rgba(99,102,241,0.2)' }}></div>
+      <div className="blur-blob" style={{ bottom: '-20%', right: '-10%', width: '50%', height: '50%', background: 'rgba(6,182,212,0.2)', animationDelay: '2s' }}></div>
 
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md z-10"
+        className="w-full max-w-md z-10 p-4"
       >
-        <div className="glass-card p-8 sm:p-10">
-          <div className="text-center mb-10">
+        <div className="glass-card p-8">
+          <div className="text-center mb-8">
             <motion.div 
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-neon shadow-lg shadow-primary/30 mb-6"
+              className="flex items-center justify-center mx-auto bg-gradient-primary mb-6"
+              style={{ width: '4rem', height: '4rem', borderRadius: '1rem', boxShadow: '0 10px 25px rgba(99,102,241,0.3)' }}
             >
-              <BrainCircuit className="w-8 h-8 text-white" />
+              <BrainCircuit size={32} color="white" />
             </motion.div>
             <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">AI Analytics</h2>
-            <p className="text-slate-400">Sign in to your intelligent workspace</p>
+            <p className="text-muted">Sign in to your intelligent workspace</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="relative">
-              <Mail className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
+              <Mail className="absolute top-0 bottom-0 text-muted" style={{ left: '1rem', margin: 'auto' }} size={20} />
               <input
                 type="email"
                 required
-                className="glass-input pl-12"
+                className="glass-input glass-input-icon"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
@@ -67,11 +68,11 @@ const Login = () => {
             </div>
             
             <div className="relative">
-              <Lock className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
+              <Lock className="absolute top-0 bottom-0 text-muted" style={{ left: '1rem', margin: 'auto' }} size={20} />
               <input
                 type="password"
                 required
-                className="glass-input pl-12"
+                className="glass-input glass-input-icon"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
@@ -81,22 +82,22 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full btn-primary flex items-center justify-center group"
+              className="w-full btn-primary"
             >
               {loading ? (
-                <span className="animate-pulse">Authenticating...</span>
+                <span style={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}>Authenticating...</span>
               ) : (
                 <>
                   Sign In
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight size={20} style={{ marginLeft: '0.5rem' }} />
                 </>
               )}
             </button>
           </form>
           
-          <div className="mt-8 text-center text-sm text-slate-400">
+          <div className="mt-8 text-center text-sm text-muted">
             Don't have an account?{' '}
-            <Link to="/signup" className="text-neon hover:text-white font-semibold transition-colors">
+            <Link to="/signup" className="text-neon font-semibold" style={{ transition: 'color 0.2s' }}>
               Create Account
             </Link>
           </div>

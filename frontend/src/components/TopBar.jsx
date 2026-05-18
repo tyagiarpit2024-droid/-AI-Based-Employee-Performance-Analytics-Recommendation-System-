@@ -13,38 +13,36 @@ const TopBar = () => {
   };
 
   return (
-    <header className="h-20 glass-card mx-4 mt-4 px-6 flex items-center justify-between sticky top-4 z-40">
-      {/* Search Bar (Visual Only for TopBar) */}
-      <div className="hidden md:flex items-center w-96 bg-slate-900/50 border border-slate-700/50 rounded-full px-4 py-2 text-slate-300 focus-within:ring-2 ring-primary transition-all">
-        <Search className="w-5 h-5 text-slate-500 mr-2" />
+    <header className="glass-card m-4 px-6 flex items-center justify-between sticky top-0 z-40" style={{ height: '5rem' }}>
+      <div className="md:flex items-center glass-input md:w-72" style={{ display: 'none', padding: '0.5rem 1rem' }}>
+        <Search size={18} color="var(--text-muted)" style={{ marginRight: '0.5rem' }} />
         <input 
           type="text" 
           placeholder="Search everywhere..." 
-          className="bg-transparent border-none outline-none w-full text-sm placeholder-slate-500"
+          style={{ background: 'transparent', border: 'none', outline: 'none', color: 'white', width: '100%', fontSize: '0.875rem' }}
         />
       </div>
 
-      <div className="flex items-center space-x-6 ml-auto">
-        <button className="relative p-2 text-slate-400 hover:text-white transition-colors">
-          <Bell className="w-5 h-5" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-neon rounded-full animate-ping"></span>
-          <span className="absolute top-1 right-1 w-2 h-2 bg-neon rounded-full"></span>
+      <div className="flex items-center justify-end w-full md:w-auto">
+        <button className="relative btn-icon btn-icon-neutral mr-4">
+          <Bell size={20} />
+          <span className="absolute bg-neon" style={{ top: '2px', right: '2px', width: '8px', height: '8px', borderRadius: '50%' }}></span>
         </button>
 
-        <div className="flex items-center space-x-3 border-l border-slate-700 pl-6">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-primary to-neon flex items-center justify-center font-bold text-white shadow-lg">
+        <div className="flex items-center border-l pl-4">
+          <div className="avatar avatar-md bg-gradient-primary mr-3">
             {user?.name?.charAt(0).toUpperCase() || 'U'}
           </div>
-          <div className="hidden md:block">
-            <p className="text-sm font-semibold text-slate-200 leading-tight">{user?.name}</p>
-            <p className="text-xs text-slate-400">Admin</p>
+          <div className="md:block" style={{ display: 'none' }}>
+            <p className="text-sm font-semibold text-white" style={{ lineHeight: 1.2 }}>{user?.name}</p>
+            <p className="text-xs text-muted">Admin</p>
           </div>
           <button 
             onClick={handleLogout}
-            className="ml-4 p-2 text-slate-400 hover:text-red-400 transition-colors rounded-lg hover:bg-slate-800"
+            className="btn-icon btn-icon-danger ml-4"
             title="Logout"
           >
-            <LogOut className="w-5 h-5" />
+            <LogOut size={20} />
           </button>
         </div>
       </div>
