@@ -2,8 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @layer base {
-  body {
-    @apply bg-gray-50 text-gray-900;
+  html {
+    font-family: 'Inter', sans-serif;
   }
+  body {
+    @apply bg-background text-slate-200 antialiased min-h-screen overflow-x-hidden;
+    /* Add a subtle grid pattern to the background */
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+      linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-surface backdrop-blur-xl border border-surfaceBorder rounded-2xl shadow-xl transition-all duration-300;
+  }
+  
+  .glass-input {
+    @apply w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all;
+  }
+
+  .btn-primary {
+    @apply relative overflow-hidden bg-gradient-to-r from-primary to-indigo-500 text-white font-medium py-3 px-6 rounded-xl shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 transform active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply bg-slate-800/80 text-slate-300 border border-slate-700 py-3 px-6 rounded-xl hover:bg-slate-700 transition-all duration-300 transform active:scale-95;
+  }
+}
+
+/* Custom Scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 1);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.5);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.8);
 }
