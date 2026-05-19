@@ -8,9 +8,9 @@ import TopBar from './components/TopBar';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import EmployeeList from './pages/EmployeeList';
-import EmployeeForm from './pages/EmployeeForm';
-import AIRecommendation from './pages/AIRecommendation';
+import ComplaintList from './pages/ComplaintList';
+import ComplaintForm from './pages/ComplaintForm';
+import AIAnalysis from './pages/AIAnalysis';
 import { AnimatePresence } from 'framer-motion';
 
 const Layout = ({ children }) => {
@@ -40,10 +40,10 @@ const AnimatedRoutes = () => {
         <Route path="/signup" element={<Register />} />
         
         <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/employees" element={<ProtectedRoute><EmployeeList /></ProtectedRoute>} />
-        <Route path="/employees/new" element={<ProtectedRoute><EmployeeForm /></ProtectedRoute>} />
-        <Route path="/employees/edit/:id" element={<ProtectedRoute><EmployeeForm /></ProtectedRoute>} />
-        <Route path="/ai-recommendation/:id" element={<ProtectedRoute><AIRecommendation /></ProtectedRoute>} />
+        <Route path="/complaints" element={<ProtectedRoute><ComplaintList /></ProtectedRoute>} />
+        <Route path="/complaints/new" element={<ProtectedRoute><ComplaintForm /></ProtectedRoute>} />
+        <Route path="/complaints/edit/:id" element={<ProtectedRoute><ComplaintForm /></ProtectedRoute>} />
+        <Route path="/ai-analysis/:id" element={<ProtectedRoute><AIAnalysis /></ProtectedRoute>} />
         
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

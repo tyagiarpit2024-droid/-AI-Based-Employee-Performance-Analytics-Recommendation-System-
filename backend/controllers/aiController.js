@@ -1,82 +1,61 @@
 const axios = require('axios');
 
-// @desc    Get AI recommendations for an employee
+// @desc    Get AI recommendation
 // @route   POST /api/ai/recommend
 // @access  Private
-const getAIRecommendations = async (req, res, next) => {
+const getRecommendation = async (req, res, next) => {
   try {
-    const { name, department, skills, performanceScore, experience } = req.body;
+    const { title, description, category, location } = req.body;
 
-    if (!name || !department || !skills || !performanceScore || !experience) {
-      res.status(400);
-      throw new Error('Please provide all employee details for recommendation');
-    }
+    const prompt = `You are an AI assistant for a Smart Complaint Management System. Analyze the following complaint and return a precise JSON object with four keys: 'priority' (Low, Medium, High), 'department' (e.g. Water, Electricity, Roads, Sanitation, etc.), 'summary' (a brief 1-sentence summary), and 'response' (a polite auto-generated response to the citizen).
 
-    const prompt = `
-Analyze this employee:
-Name: ${name}
-Department: ${department}
-Skills: ${Array.isArray(skills) ? skills.join(', ') : skills}
-Performance Score: ${performanceScore}/100
-Experience: ${experience} years
+Complaint Title: ${title}
+Category: ${category}
+Location: ${location}
+Description: ${description}
 
-Give:
-1. Promotion Recommendation
-2. Training Suggestions
-3. Feedback
-4. Ranking Insight
-
-Return a clean JSON response strictly in this format without markdown code blocks:
-{
-  "promotionRecommendation": "string",
-  "trainingSuggestions": ["string", "string"],
-  "feedback": "string",
-  "rankingInsight": "string"
-}
-`;
+Respond ONLY with valid JSON. Do not include any other text or markdown formatting like \`\`\`json.`;
 
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'openai/gpt-3.5-turbo', // You can change to a free model if needed like 'google/gemini-pro'
+        model: 'openai/gpt-3.5-turbo',
         messages: [{ role: 'user', content: prompt }],
       },
       {
         headers: {
           'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json'
+        }
       }
     );
 
-    const aiText = response.data.choices[0].message.content;
+    const aiMessage = response.data.choices[0].message.content;
     
-    // Parse the JSON string carefully
+    // Attempt to parse JSON. Sometimes AI returns markdown wrapped JSON
     let parsedData;
     try {
-      // Remove any markdown JSON blocks if present
-      const cleanedText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
-      parsedData = JSON.parse(cleanedText);
-    } catch (parseError) {
-      console.error('AI Response Parsing Error:', parseError);
-      console.log('Raw AI Text:', aiText);
-      // Fallback response if AI doesn't return perfect JSON
+      const cleanJsonStr = aiMessage.replace(/```json/g, '').replace(/```/g, '').trim();
+      parsedData = JSON.parse(cleanJsonStr);
+    } catch (e) {
+      // Fallback if parsing fails
       parsedData = {
-        promotionRecommendation: "Could not generate specifically.",
-        trainingSuggestions: ["General upskilling"],
-        feedback: aiText,
-        rankingInsight: "Data unavailable"
+        priority: "Medium",
+        department: "General Administration",
+        summary: "Complaint regarding " + category,
+        response: "Your complaint has been received and will be reviewed shortly.",
+        raw: aiMessage
       };
     }
 
-    res.status(200).json(parsedData);
-  } catch (error) {
-    console.error('AI API Error:', error.response?.data || error.message);
+    res.json(parsedData);
+  } catch (err) {
+    console.error('AI Error:', err.response ? err.response.data : err.message);
     res.status(500);
-    next(new Error('Failed to fetch AI recommendations'));
+    next(new Error('Failed to generate AI analysis'));
   }
 };
 
 module.exports = {
-  getAIRecommendations,
+  getRecommendation
 };

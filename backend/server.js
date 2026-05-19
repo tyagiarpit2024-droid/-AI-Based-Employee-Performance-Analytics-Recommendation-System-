@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes.js'));
-app.use('/api/employees', require('./routes/employeeRoutes.js'));
+app.use('/api/complaints', require('./routes/complaintRoutes.js'));
 app.use('/api/ai', require('./routes/aiRoutes.js'));
 
 app.get('/', (req, res) => {

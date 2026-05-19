@@ -1,55 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
-import { Search, Edit, Trash2, UserPlus, BrainCircuit, Users } from 'lucide-react';
+import { Search, Edit, Trash2, FilePlus, BrainCircuit, FileText } from 'lucide-react';
 import AnimatedPage from '../components/AnimatedPage';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 
-const EmployeeList = () => {
-  const [employees, setEmployees] = useState([]);
+const ComplaintList = () => {
+  const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchEmployees();
+    fetchComplaints();
   }, []);
 
-  const fetchEmployees = async (search = '') => {
+  const fetchComplaints = async (search = '') => {
     setLoading(true);
     try {
-      const url = search ? `/employees/search?department=${search}` : '/employees';
+      const url = search ? `/complaints/search?location=${search}` : '/complaints';
       const res = await api.get(url);
-      setEmployees(res.data);
+      setComplaints(res.data);
     } catch (err) {
-      toast.error('Failed to fetch employees');
+      toast.error('Failed to fetch complaints');
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this employee?')) {
+    if (window.confirm('Are you sure you want to delete this complaint?')) {
       try {
-        await api.delete(`/employees/${id}`);
-        setEmployees(employees.filter(emp => emp._id !== id));
-        toast.success('Employee deleted successfully');
+        await api.delete(`/complaints/${id}`);
+        setComplaints(complaints.filter(c => c._id !== id));
+        toast.success('Complaint deleted successfully');
       } catch (err) {
-        toast.error('Failed to delete employee');
+        toast.error('Failed to delete complaint');
       }
     }
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchEmployees(searchTerm);
+    fetchComplaints(searchTerm);
   };
 
   const handleClear = () => {
     setSearchTerm('');
-    fetchEmployees();
+    fetchComplaints();
   };
 
   const container = {
@@ -67,17 +67,17 @@ const EmployeeList = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white tracking-tight flex items-center">
-            <Users size={32} className="text-primary mr-3" />
-            Employee Directory
+            <FileText size={32} className="text-primary mr-3" />
+            Complaint Registry
           </h1>
-          <p className="text-muted mt-1">Manage and analyze your workforce</p>
+          <p className="text-muted mt-1">Manage and track all registered issues</p>
         </div>
         
         <div className="flex w-full md:w-auto gap-3 flex-wrap">
           <form onSubmit={handleSearch} className="flex relative w-full md:w-72">
             <input
               type="text"
-              placeholder="Search department..."
+              placeholder="Search by location..."
               className="glass-input glass-input-icon"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -89,8 +89,8 @@ const EmployeeList = () => {
               Clear
             </button>
           )}
-          <Link to="/employees/new" className="btn-primary flex items-center" style={{ whiteSpace: 'nowrap' }}>
-            <UserPlus size={16} className="mr-2" /> Add New
+          <Link to="/complaints/new" className="btn-primary flex items-center" style={{ whiteSpace: 'nowrap' }}>
+            <FilePlus size={16} className="mr-2" /> New Complaint
           </Link>
         </div>
       </div>
@@ -105,10 +105,11 @@ const EmployeeList = () => {
             <table className="custom-table">
               <thead>
                 <tr>
-                  <th>Employee</th>
-                  <th>Department</th>
-                  <th>Skills</th>
-                  <th className="text-center">Score</th>
+                  <th>Title & Date</th>
+                  <th>Reporter</th>
+                  <th>Category</th>
+                  <th>Location</th>
+                  <th>Status</th>
                   <th className="text-center">Actions</th>
                 </tr>
               </thead>
@@ -117,67 +118,45 @@ const EmployeeList = () => {
                 initial="hidden"
                 animate="show"
               >
-                {employees.map((emp) => (
-                  <motion.tr variants={item} key={emp._id}>
+                {complaints.map((comp) => (
+                  <motion.tr variants={item} key={comp._id}>
                     <td>
-                      <div className="flex items-center">
-                        <div className="avatar avatar-md bg-gradient-primary mr-3">
-                          {emp.name.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                          <p className="font-medium text-white">{emp.name}</p>
-                          <p className="text-xs text-muted">{emp.email}</p>
-                        </div>
+                      <div>
+                        <p className="font-medium text-white">{comp.title}</p>
+                        <p className="text-xs text-muted">{new Date(comp.createdAt).toLocaleDateString()}</p>
                       </div>
                     </td>
                     <td>
-                      <span className="badge badge-neutral">
-                        {emp.department}
+                      <div>
+                        <p className="text-sm text-white">{comp.name}</p>
+                        <p className="text-xs text-muted">{comp.email}</p>
+                      </div>
+                    </td>
+                    <td><span className="badge badge-neutral">{comp.category}</span></td>
+                    <td><span className="text-sm">{comp.location}</span></td>
+                    <td>
+                      <span className={`badge ${comp.status === 'Resolved' ? 'badge-success' : comp.status === 'Pending' ? 'badge-warning' : 'badge-neutral'}`}>
+                        {comp.status}
                       </span>
-                    </td>
-                    <td>
-                      <div className="flex flex-wrap gap-1">
-                        {emp.skills.slice(0, 3).map((skill, idx) => (
-                          <span key={idx} className="badge badge-primary">
-                            {skill}
-                          </span>
-                        ))}
-                        {emp.skills.length > 3 && (
-                          <span className="badge badge-neutral">
-                            +{emp.skills.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="text-center">
-                      <div style={{
-                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                        width: '3rem', height: '3rem', borderRadius: '50%', fontWeight: 'bold', fontSize: '0.875rem',
-                        background: 'rgba(15,23,42,0.5)',
-                        border: `4px solid ${emp.performanceScore >= 80 ? 'rgba(16,185,129,0.2)' : emp.performanceScore >= 60 ? 'rgba(245,158,11,0.2)' : 'rgba(239,68,68,0.2)'}`,
-                        color: emp.performanceScore >= 80 ? 'var(--success)' : emp.performanceScore >= 60 ? 'var(--warning)' : 'var(--danger)'
-                      }}>
-                        {emp.performanceScore}
-                      </div>
                     </td>
                     <td>
                       <div className="flex justify-center gap-2">
                         <button 
-                          onClick={() => navigate(`/ai-recommendation/${emp._id}`, { state: { employee: emp } })} 
+                          onClick={() => navigate(`/ai-analysis/${comp._id}`, { state: { complaint: comp } })} 
                           className="btn-icon btn-icon-primary" 
-                          title="AI Analysis"
+                          title="AI Triage"
                         >
                           <BrainCircuit size={20} />
                         </button>
                         <button 
-                          onClick={() => navigate(`/employees/edit/${emp._id}`, { state: { employee: emp } })} 
+                          onClick={() => navigate(`/complaints/edit/${comp._id}`, { state: { complaint: comp } })} 
                           className="btn-icon btn-icon-neutral" 
                           title="Edit"
                         >
                           <Edit size={20} />
                         </button>
                         <button 
-                          onClick={() => handleDelete(emp._id)} 
+                          onClick={() => handleDelete(comp._id)} 
                           className="btn-icon btn-icon-danger" 
                           title="Delete"
                         >
@@ -187,15 +166,14 @@ const EmployeeList = () => {
                     </td>
                   </motion.tr>
                 ))}
-                {employees.length === 0 && (
+                {complaints.length === 0 && (
                   <tr>
-                    <td colSpan="5" className="text-center py-8">
+                    <td colSpan="6" className="text-center py-8">
                       <div className="flex flex-col items-center justify-center">
                         <div className="avatar avatar-lg bg-surface mb-4">
-                          <Users size={32} color="var(--text-muted)" />
+                          <FileText size={32} color="var(--text-muted)" />
                         </div>
-                        <p className="text-muted text-lg">No employees found.</p>
-                        <p className="text-muted text-sm mt-1">Try adjusting your search or add a new employee.</p>
+                        <p className="text-muted text-lg">No complaints found.</p>
                       </div>
                     </td>
                   </tr>
@@ -209,4 +187,4 @@ const EmployeeList = () => {
   );
 };
 
-export default EmployeeList;
+export default ComplaintList;

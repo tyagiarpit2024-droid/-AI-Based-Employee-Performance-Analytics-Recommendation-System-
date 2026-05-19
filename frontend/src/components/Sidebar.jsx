@@ -1,15 +1,15 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, UserPlus, BrainCircuit, Activity } from 'lucide-react';
+import { LayoutDashboard, FileText, FilePlus, BrainCircuit, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Sidebar = () => {
   const location = useLocation();
 
   const navItems = [
-    { path: '/', name: 'Overview', icon: LayoutDashboard },
-    { path: '/employees', name: 'Employees', icon: Users },
-    { path: '/employees/new', name: 'Add Employee', icon: UserPlus },
+    { path: '/', name: 'Dashboard', icon: LayoutDashboard },
+    { path: '/complaints', name: 'Complaints', icon: FileText },
+    { path: '/complaints/new', name: 'New Complaint', icon: FilePlus },
   ];
 
   return (
@@ -19,7 +19,7 @@ const Sidebar = () => {
           <Activity size={20} color="white" />
         </div>
         <span className="text-xl font-bold bg-gradient-text">
-          AI Analytics
+          Smart City Desk
         </span>
       </div>
 
@@ -53,8 +53,8 @@ const Sidebar = () => {
 
       <div className="m-4 p-4 border border-primary" style={{ background: 'rgba(99,102,241,0.1)', borderRadius: 'var(--radius-lg)', textAlign: 'center' }}>
         <BrainCircuit size={32} color="var(--neon)" style={{ margin: '0 auto 0.5rem auto', opacity: 0.8 }} />
-        <h4 className="text-sm font-semibold text-white mb-1">AI Engine Active</h4>
-        <p className="text-xs text-muted">OpenRouter integration is running optimally.</p>
+        <h4 className="text-sm font-semibold text-white mb-1">AI Triage Active</h4>
+        <p className="text-xs text-muted">Complaints are auto-analyzed by OpenRouter AI.</p>
       </div>
     </div>
   );
